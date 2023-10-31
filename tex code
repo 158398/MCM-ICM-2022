@@ -1,0 +1,570 @@
+\documentclass{mcmthesis}
+\mcmsetup{CTeX = false,    % 使用 CTeX 套装时，设置为 true
+          tcn = {2300407}, problem = {D},
+          sheet = true, titleinsheet = true, keywordsinsheet = true,
+          titlepage = false, abstract = false}
+\usepackage{newtxtext}%\usepackage{times}
+\usepackage{lipsum}
+\usepackage{algorithm}
+\usepackage{algpseudocode}     
+\usepackage{amsthm}
+\usepackage{txfonts}
+\usepackage{indentfirst}
+\usepackage{balance}
+\usepackage{appendix}
+\usepackage{color}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage{caption}
+\usepackage{graphicx}
+\begin{document}
+\title{\textbf{Devote to a better world:Research on SDGs network and Strategies for developing SDGs}}
+\begin{abstract}
+~~~In 2015,the UN presented a report of 17 Sustainable Development Goals (SDGs) based on Millennium Development Goals(MDGs),and added them to 2030 agenda. SDGs aim to embark on a new path of human advancement.Although they  cover various aspects,some goals and their targets still interlink with each,which means 17 SDGs form a system.People are keen to scale up synergies,decrease restriction effect.\par
+To analyze and solve some practical problems,we first build a network of SDGs based on statistics of authorities.We use Spearman coefficient to describe similarities of indicators and give weights to them,then we apply \textbf{Spectral Cluster} to obtain cluster structure of SDGs.We take Indonesia as the object of analysis,results show indicators '2.3.1'(about agriculture), '2.4.1'(about fertilizer), '3.1.1'(about death of maternal mortality)  have strong relations with each other.\par
+Next,we utilize \textbf{Social Network Analysis} to sort SDGs according to their eigenvectors.We construct a \textbf{Multiple Layer Model},which aggregate SDGs to six macro dimensions and resolve them into indicators.After that we create \textbf{Network Structure parameters:} diffusing rate factor $\alpha$ and affecting factor $\beta$.We use the two parameters to establish \textbf{Network Diffusion Model} and simulate of influence of network.We choose the most helpful SDG to macro dimensions as priority.Our results display SDG 1, SDG 2,SDG 17 are the most important SDGs for Indonesia,and SDG 17 has the highest priority.\par
+Afterward,We assume SDG 1 No poverty is achieved,determine changes of indicators when SDG 1 is done,and take advantage of Network Diffusion Model to spread the influence.Further more,we analyze previous studies and our cluster structure,and we \textbf{insert several new node} into network.We find Indonesia should develop \textbf{Information Industry} after achieving SDG 1,and we believe the new SDG should named "Development and popularization of Information Industry"\par
+Then,to characterize influence of \textbf{international crisis} to SDGs,we exert the influence of important events on the clusters associated with them. We change the rate of completion and the amount of task. The influence the crisis cause would decrease over time. Then we calculate the change of target priority and completion through the network diffusion model. We find that in the face of natural disasters, SDG 2 would become the primary target that Indonesia needs to consider. When the effects of disasters are weakened, the network will return to normal.\par
+Finally,we extend our models to other fields. Since our model is comprehensive and robust,we believe they can be applied in many fields,especially \textbf{business field}.\par
+The sensitive analysis show network parameter $\alpha$ and $\beta$ has influence on network results,but on the dimension on long time,our models are robust.
+\begin{keywords}
+\textbf{Spectral Cluster},\textbf{Social Network Analysis},\textbf{Multiple Layer Model},\textbf{Network Diffusion}
+\end{keywords}
+\end{abstract}
+\maketitle
+
+\tableofcontents
+
+\setcounter{page}{1}
+\newpage
+\section{Introduction}
+\subsection{Background}
+In 2000,in order to create a world with better well-being, economic prosperity, and environmental protection,189 countries signed United Nations Millennium Declaration at United Nations Summit.In 2015,UN gave the last report of The Millennium Declaration\cite{United Nations}.In the same year,UN set 17 Sustainable Development Goals(SDGs) to the 2030 agenda\cite{United}.The latest SDG report\cite{9} shows there are still many problems and appeals the whole world to take actions,with only 7 year left,people are more eager than prior decade to achieve SDGs,and are more willing to put resources and energy into this great cause.
+\subsection{Literature Review}
+SDGs are not isolated,they have close both positive and negative relationships\cite{Nature 2016}.Due to the complex relations,researchers regard all SDGs as a net and use network technology to analyse them.Some large institutions have published some guided reports,The United Nations Department of Economic and Social Affairshas set a expert group to construct association network between SDGs and secondary targets\cite{UN-DESA No.141.2015}. The Organization for Economic Cooperation and Development proposes a framework of "Sustainable Development Policy coordination"\cite{OECD Paris 2016}.Open Working Group(OWG) list the relationships and interconnection among 19 key areas in the annex material of the 2014 proposal\cite{OWG 2014}.Additionally,OWG determine relationships in targets\cite{Open Working Group 2018}.These resources qualitatively describe the network but do not give further details.
+\par
+Since SDGs have huge complexity,it is necessary for us to pay more attention to SDGs and focus on more important ones in the preliminary stage.Actions taken against one target may have synergies (mutually reinforcing) or trade-offs (contradictory) with another target.Some researchers divide SDGs into several categories according to strong sustainable development,weak sustainable development and other economic management theory.\cite{8Natl Sci Rev}  Further more,Institute for Global Environment Strategies(IGES) write a long report about the study in SDGs' target correlation system with quantitative method,in addition,IGES applies social network analysis to analyze the structure of the target correlation system in each country to find out the secondary goals that play a pivotal role\cite{IGES}.\par
+To find import node in a network,researchers usually use \textbf{Social Network Analysis}(SNA)\cite{SNA}. Further more,if the network has obvious hierarchical structure,SNA and community algorithm can be both applied in such a network\cite{SNAC}.This network analyse method can be used in many fields.
+\subsection{Our Work}
+\begin{itemize}
+    \item Our model overcome some defects of present studies.Unlike previous studies that often use qualitative analysis, our model does quantitative work and our network is built according to statistics and based on qualitative and theoretical descriptions.We collect a plenty of statistics from authority such as UN,WorldBank,WHO.Databases we used are listed in appendix.Our results are produced from huge statistics which makes it more reliable and convincing.
+    \item We not only build SDGs network,but explore relations to secondary targets of SDGs. Additionally, by studying previous literature, we use spectral cluster to generate communities,then we summarize six macro dimensions which 17 SDGs contribute to.Through Comparing communities and macro dimensions we find SDGs network has layers, which is useful when giving guide to make policy. Not just discuss relations between two nodes,o ur model also describe the structure features of network.We introduced two parameter $\alpha$ and $\beta$ to control the structure of network, allowing us to generate a network family and simulate big event or crisis.
+    \item We combine Economics and Management with our results,explain the meaning of results from theory.We give suggestions that clear priority of SDGs and propose a systematic programme to policymaker of certain country according to our results.
+    \item We take Indonesia as a analysis object,instead of validating model from concepts and theories.
+\end{itemize}
+The most important and innovative points of our model are shown in Fig.1.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth,height=0.65\textwidth]{figures/flow3.png}
+    \caption{Key innovative points of our model}
+    \label{fig:my_label}
+\end{figure}
+\section{Assumption and Rationales}
+The assumptions are proposed to eliminate complexity but do not invalidate the results of modeling process.All assumptions and justifications will be re-emphasized once be re-used in our model.
+\begin{itemize}
+    \item When implementing the SDGs,different countries will set different goals and priorities according to the national conditions. 
+    \par \textbf{Justification:}Different countries have completely different national conditions and the measures that appropriate to them are completely different. Another reason is that any measures can only be taken by the country.
+    \item In the execution of SDGs, one country must pay the most attention to one SDG,the most important one.
+    \par \textbf{Justification:}One SDG contains many targets,a country can not develop all SDGs at a period. A country may have a comprehensive development plan,but it must allocate more resources to the most priority than any other SDG.
+    \item When executing an SDG target, each subtask under that target receives equal attention, and each subtask has the same propulsion speed.
+    \par \textbf{Justification:}The investment from each country to each target of SDGs is different, the speed of the resulting target propulsion is also uncertain.This assumption is set to reasonably reduce the complexity and uncertainty of the model.
+    \item Nodes in network only affect their neighbours.  
+    \par \textbf{Justification:}For this system,undirected influence is so weak that is negligible.
+    \item If there is synergy or restriction between two targets, the execution of one target has an impact on the other.
+    \par \textbf{Justification:}Because of the synergy or restriction effect between the two targets, there must have connection between the two, so the change of situation of one target (such as progress) should have a corresponding impact on the other target.
+\end{itemize}
+\section{Notations}
+\begin{table}[H]
+    \centering
+    \caption{Notation Table}
+    \label{tab:my_label}
+    \begin{tabular}{c|c}
+    \hline
+         \textbf{Notation}& \textbf{Meaning} \\
+         $T_{i}$&a SDG,$i=1,2,\cdots ,17$\\
+         $t_{i}^{n}$&A target of $T_{i}$\\
+         $S\left ( t_{i}^{n}  \right ) $&Time sequence data of $t_{i}^{n}$\\
+         $C\left ( t_{i}^{n},t_{j}^{m}   \right ) $&A coefficient reflect synergies or constraints.\\
+         $G_{t}\left ( V,E \right )$&Network of targets\\
+         $G_{T}\left ( V,E \right )$&Network of SDGs\\
+         d&Degree of node\\
+         EC&Eigenvector centrality of node\\
+         D&The degree matrix of graph\\
+         $W$&The matrix of the edge weights of graph\\
+         $L$&The Laplacian matrix of graph\\
+         $I\left ( t_{i}^{n}   \right ) $&The importance of the indicator in the network\\
+         $\alpha$&Rate factor for executing a subtarget\\
+         $\beta$&Impact factor between subtargets\\
+         $R\left ( t_{i}^{n}   \right ) $&Remaining task of $t_{i}^{n}$\\
+         $R_{Total}$&Total remaining task 
+    \end{tabular}  
+\end{table}
+\section{Our Model}
+\subsection{Network based on indicator synergy and constraint relationship}
+\subsubsection{Data Processing}
+We obtained the time series of the indicators under each SDG between 1910 and 2018 from the Database. In assumption we mentioned that the implementation of SDGs is affected by the national conditions of different goals and priorities. We selected Indonesia as a research object, Indonesia is a developing country which has large development space on several SDGs.Choosing it is beneficial to analyze SDGs and corresponding indicators. Due to the different statistical policies of different countries, most indicators in the data base have different degrees of missing data. In order to ensure that the results are supported by sufficient data, we conducted the following processing:
+\begin{enumerate}
+    \item If an indicator has less than 4 valid data in that time period, the index would be discarded.
+    \item  For metrics with sufficient data,  we apply  linear interpolation between known data occurs to obtain a coherent time series.
+    \item The model would only analyze a pair of indicators with a sufficiently long overlap of the time series.
+\end{enumerate}
+
+\subsubsection{Synergy and restriction between indicators}
+To accurately characterize the interrelationships among the 17 SDGs, we first construct a network of indicator relationships,based on the time series data of each SDG. We take indicators as the nodes.The weight of the edge between the nodes reflects the weight of the coordination and restriction between the indicators and weight is calculated by Spearman correlation coefficient.We extracte the causal relationship between 17 SDGs from the official UN documents as the basis for the connection between the nodes.Then, we combine these data to obtain network reflecting the relationship of 17 SDG targets.  Since the network composed of indicators reflects the interaction between the indicators contained in each SDG and contains a lot of deep SDG information, we further conducted spectral clustering analysis on the index network.\par
+Our model first analyzed the relationship between the indicators included by different SDG, where there are synergistic and trade-off effects between different indicators or sub-tasks. The specific definition is given as follows:
+\par
+\textbf{Synergistic effect :}If the positive change in indicator $t_{i}^{n}$ can promote the positive change in another indicator $t_{j}^{m}$, there is a synergistic effect between the two indicators.\par
+\textbf{Restriction effect :}If the positive change of indicator$t_{i}^{n}$ will cause a negative change in another indicator $t_{j}^{m}$, there is a restriction effect between the two indicators.\par
+To quantitatively characterize the synergy and constraints between indicators, we introduce \textbf{Spearman correlation coefficient} to analyze the indices contained by different SDG targets.Spearman's correlation coefficient is a correlation based on the rank difference of elements in two sequences. Compared with Pearson's correlation coefficient, Spearman's correlation coefficient ignores the distribution of elements, and the influence of dimension and changing trend in the correlation calculation can explore the non-linear relationship between variables. It is an important index to measure the correlation between different types of indicators.The Spearman correlation coefficients of two sequence $X$ and $Y$ of length n are as follows:
+\begin{equation}
+    Corr_{s}\left ( X,Y \right ) =1-\frac{6\sum_{i=1}^{n}d_{i}^{2}  }{n\left ( n^{2}-1  \right ) } ,i=1,2\cdots n
+\end{equation}
+in which Medium $d_{i}$ indicates the equal magnitude difference between $X_{i}$ and $Y_{i}$.The rank of an element in a sequence indicates the location of the element after arranging all the elements in the sequence from large to small,with $-1\le  Corr_{s}\left ( X,Y \right ) \le 1$.According to Significance analysis of Spearman's coefficient in small sample cases\cite{SP},we conclude when $\left | Corr_{s}\left ( X,Y \right ) \right | > 0.6$,$X$ has a strong correlation with $Y$.Calculating the Spearman coefficient of the time series of the indicator $t_{i}^{n}$ and the indicator 
+$t_{j}^{m}$ can measure the correlation between these two indicators.\par
+However, the effect between the indicators is not only related to the correlation of the index values, but also to the specific meaning of the indicators. The indicators included in SDG can be divided into several different types according to the meaning of the indicators: positive, negative and neutral indicators. These three indicators are defined as follows:\par
+\textbf{The forward indicator, $t_{pos}$:}If the value of indicator $t_{i}^{n}$ increases indicates that the goal develops towards a positive direction and if the decrease of it indicates the development towards a negative direction.Then the indicator is a positive indicator.Common positive indicators include gross national product, national culture penetration rate and so on.\par
+\textbf{Negative indicator $t_{neg}$:}If the value of indicator $t_{i}^{n}$ increases indicates that the goal develops towards a negative direction and if the decrease of it indicates the development towards a positive direction.Then the indicator is a positive indicator. Common negative indicators include Neonatal mortality, The population below the national poverty line and so on.\par
+\textbf{Neutral indicator $t_neu$:} an indicator that is neither positive nor negative, such as the energy investment rate of private enterprises.\par
+We manually divide all the indicators in the dataset according to the meaning of the indicators, and the correlation between the different types of the indicators and the index values determines the type of effect between the indicators.For example, if a positive indicator has a positive correlation with another, there is a synergistic effect between the two indicators; if a positive indicator has a negative correlation with another, there is a restriction effect between the two indicators.\par
+Therefore, we define the $C\left ( t_{i}^{n},t_{j}^{m}   \right ) $ reflecting the synergistic and restriction relationship between indicator $t_{i}^{n}$ and indicator $t_{j}^{m}$. The calculation formula is as follows:
+\begin{equation}
+    C\left ( t_{i}^{n},t_{j}^{m}   \right ) =sign\left ( t_{i}^{n}  \right ) \times sign\left ( t_{j}^{m}  \right )\times Corr_{s}\left ( S\left ( t_{i}^{n}  \right ) ,S\left ( t_{j}^{m}  \right )  \right )  ,i,j=1,2\cdots,\text{nmuber of indicators}
+\end{equation}
+$Corr_{s}\left ( S\left ( t_{i}^{n}  \right ) ,S\left ( t_{j}^{m}  \right )  \right ) $ represents Spearman's correlation coefficient of $t_{i}^{n}$ and $t_{j}^{n}$,$sign\left (  t_{i}^{n} \right ) $ is an indicator function indicating the type of indicator,is calculated by:
+\begin{equation}
+    sign\left (  t_{i}^{n} \right ) =\left\{\begin{matrix}
+ 1,t_{i}^{n}\in t_{pos} \\
+0,t_{i}^{n}\in t_{neg}\\
+-1,t_{i}^{n}\in t_{neu}
+\end{matrix}\right.
+\end{equation}
+\par
+When $ C\left ( t_{i}^{n},t_{j}^{m}   \right )>0.6$,there is a significant synergistic effect between $t_{i}^{n}$ and $t_{j}^{m}$,when $ C\left ( t_{i}^{n},t_{j}^{m}   \right )<0.6$,there is a significant restriction effect between $t_{i}^{n}$ and $t_{j}^{m}$.Fig.2 shows synergistic and restriction effects.
+\begin{figure}[h]
+    \centering
+    \subfigure{
+    \centering
+    \label{fig:subfig:onefunction}
+    \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{figures/Sub1.png}
+    \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{figures/sub2.png}
+    }
+    \caption{The left graph is the graph of the synergistic effect between the subtargets included in SDG, and the right graph is the graph of the restriction effect between the subtargets. The thickness of the edge and the size of the junction reflect the strength of the influence effect, and the node label is the number of the subtarget}
+    \label{fig:my_label}
+\end{figure}
+\subsubsection{Construct the SDGs network }
+Synergy and constraints are common among the 17 SDG targets. Taking the development of SDG 1 (No poverty) as an example, poverty eradication requires local people to develop their economy. While in poor places, the lack of high-tech leading upper technology products often means that people need to develop original resources. This usually violates the goals advocated by SDG 15 (life on land).Our model reflects the relationships between $T_{i}$ and $T_{j}$,depending on relationships of indicators they contain.First,we construct \textbf{the indicator network} $G_{t} \left ( V,E \right ) $,then we calculate similarities between each indicators, after that combined indicators of the same SDG to obtain the final 17 \textbf{SDGs network} $G_{T} \left ( V,E \right ) $,relationship between $G_{t} \left ( V,E \right ) $ and $G_{T} \left ( V,E \right ) $ is shown in Fig.3.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth,height=0.3\textwidth]{figures/p.jpg}
+    \caption{Relations between two SDGs}
+    \label{fig:my_label}
+\end{figure}
+\par
+When constructing the directed network $G_{t} \left ( V,E \right ) $,we regard each indicator as node and give  weight to edge according to the effects between the two nodes connected by the edge.Since effect $C\left ( t_{i}^{n},t_{j}^{m}   \right )$ reflects correlation between indicators,it may not has obvious causal relationship.Due to that we build the network with expert suggestions from UN document,which indicates one or bidirectional causal relationships among the 17 SDGs.\par
+In $G_{t} \left ( V,E \right ) $,we suppose $t_{i}^{n}$ has a edge pointing to $t_{j}^{m}$ only when $T_{i}$ has causal relation pointing to $T_{j}$,and $ C\left ( t_{i}^{n},t_{j}^{m}   \right )>0.6$.The remaining indicators in SDG have directed edges with a weight of 0.Weight Denote $T_{i}\to T_{j}$ means $T_{i}$ has causality pointing to $T_{j}$,then $w\left ( t_{i}^{n}\to t_{j}^{m}   \right ) $  is:
+\begin{equation}
+    w\left ( t_{i}^{n}\to t_{j}^{m}   \right ) =\left\{\begin{matrix}
+  C\left ( t_{i}^{n},t_{j}^{m}   \right ),T_{i}\to T_{j}~~ and ~~C\left ( t_{i}^{n},t_{j}^{m}   \right )> 0.6 \\
+0,else
+\end{matrix}\right.i,j=1,2\cdots,\text{nmuber of indicators}
+\end{equation}
+Based on directed network $G_{t} \left ( V,E \right ) $,we combine indicators in the same SDG to obtain $G_{T} \left ( V,E \right ) $,Only if there is a causal relationship between $T_{i}$ and $T_{j}$ ,there would be an edge between them. the weight on edge between $T_{i}$ and $T_{j}$ is mean of indicators they contain,which is:
+\begin{equation}
+    W\left ( T_{i}\to T_{j}   \right ) =mean\left ( w\left ( t_{i}^{n},t_{j}^{n}   \right )  \right ) 
+\end{equation}
+From this we obtained the network relationship describing 17 SDG $G_{T} \left ( V,E \right ) $,is shown in Fig.4,the thickness of the edge and the size of the junction reflect the strength of the influence effect, and the junction label is the number of the SDG target.
+\begin{figure}[h]
+    \centering
+    \subfigure{
+    \centering
+    \label{fig:subfig:onefunction}
+    \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{figures/SDG-S.png}
+    \includegraphics[width=0.4\textwidth,height=0.4\textwidth]{figures/SDG-r.png}
+    }
+    \caption{The left graph shows the relationship of the synergistic effects between SDG, and the right graph shows the relationship of the restriction effects between SDG}
+    \label{fig:my_label}
+\end{figure}
+From Fig.4,SDG 1,6 and 17 have synergistic effects on multiple other SDGs which eliminate poverty and hunger. Enhancing international cooperation is basis of some other targets, they should be given greater attention and priority; SDG 12,16 have restrictive effects on multiple other targets, including environment, rule of law. Because of their conflicts with other development, they should be reasonably arranged.
+\subsubsection{Spectral Clustering}
+After constructing indicator network $G_{t} \left ( V,E \right ) $,from the network we find many indicators belonging to different SDG also have a relatively dense synergistic relationship. This means the connection between the indicators is not strictly constrained by the SDG division.it shows there may has other small group,in a word,the network has communities.\par
+Considering calculation of $C\left ( t_{i}^{n},t_{j}^{m} \right )$ is based on indicator correlations,indicators with strong synergistic interaction can form a cluster.Indicators in each cluster are more closely connected, while the indicators between the clusters do not have any mutual influence or certain restriction relationship.Excavating this clustering relationship helps to make decisions that can improve the efficiency, we used spectral clustering to cluster the nodes in $G_{t} \left ( V,E \right )$.\par
+Spectral clustering \cite{CLU} evolves in graph theory and is widely used in clustering due to its excellent performance.Spectral clustering is performed on the undirected weighted graph, and the weight of edge between two nodes reflects the difference between nodes, the larger the difference between nodes,the smaller the edge between nodes; the smaller the difference between nodes, the edge between nodes have a larger weight. For some undirected weighted graph $G$, the goal of spectral clustering is to find a division that makes the sum of the weights of the edges between the different clusters as small as possible,for a division$Cut=\left \{ A_{1},A_{2},\cdots ,A_{k}   \right \} $,The sum$Sum(cut)$ of weights of edges between different clusters can be expressed as follows:
+\begin{equation}
+    Sum\left ( Cut \right ) =\frac{\sum_{i}^{k}w\left ( A_{i},\bar{A}   \right )  }{\left | A_{i}  \right | } ,i=1,\cdots,k
+\end{equation}
+where $w\left ( A_{i},\bar{A}   \right )$denotes the sum of weights of junctions in cluster $A_{i}$ and edges of all junctions outside cluster $A_{i}$.The aim of spectral is find a division:
+\begin{equation}
+    Cut_{best}=\arg \min _{cut}Sum\left ( Cut \right )   
+\end{equation}
+The calculation flow of the spectral clustering is shown in Algorithm 1:
+\begin{algorithm}
+\caption{ The calculation flow of the spectral clustering}
+\label{alg:Framwork}
+\begin{algorithmic}[H]
+\State \textbf{Step 1:}The calculation of the edge weight matrix $W$ of the graph and the degree matrix $D$, the degree matrix $D$ is a diagonal matrix, and the values on the diagonal are the degrees of each node
+\State \textbf{Step 2:}Calculate the Laplacian matrix L of graph.$L=D-W$
+\State \textbf{Step 3:}Computing the normalized Laplacian matrix$D^{-\frac{1}{2} }L D^{-\frac{1}{2} }$
+\State \textbf{Step 4:}The eigenvectors corresponding to the smallest k eigenvalues of the normalized Laplacian matrix were calculated.
+\State \textbf{Step 5:}Convert k n-dimension eigenvectors into n k-dimension eigenvectors by transposition,each vector corresponds to one node.
+\State \textbf{Step 6:} Do k-means cluster to n eigenvectors in Step 5.
+\State \textbf{Step 7:}Assign node to responding cluster,end algorithm.
+ \end{algorithmic}
+\end{algorithm}
+We want  the indicators with synergistic effect  $G_{t} \left ( V,E \right )$, are divided to the same cluster, which may have some similarity.In addition, the indexes between different clusters have a restrictive effect and have differences. The spectral clustering divides the graph in a manner applicable to our model.Since $G_{t} \left ( V,E \right )$ has edges with negative weights and is a directed graph, before clustering, we need to convert $G_{t} \left ( V,E \right )$ into an undirected graph with non-negative weights,the adjustment process is as follows:
+\begin{equation}
+    \left\{\begin{matrix}
+ w^{'} \left ( t_{i}^{n}, t_{j}^{m}   \right ) = w \left ( t_{i}^{n}\to t_{j}^{m}   \right )+1 &w\left ( t_{i}^{n}\to t_{j}^{m}   \right ) \ne 0\\
+ w^{'} \left ( t_{j}^{m}, t_{i}^{n}   \right )  = w\left ( t_{j}^{m}\to t_{i}^{n}   \right )+1 &w\left ( t_{j}^{m}\to t_{i}^{n}   \right ) \ne 0 \\
+  w^{'} \left ( t_{i}^{n}\to t_{j}^{m}   \right )&else
+\end{matrix}\right.
+\end{equation}
+This process converts the directed edge between two nodes into an undirected edge with weights between 0 and 2, nodes with synergistic effect have a weight greater than 1, and a node with restriction effect have a weight less than 1.The magnitude of the weights reflects the relationship between the nodes,thus, we can apply the spectral clustering of the adjusted $G_{t} \left ( V,E \right )$.Because some nodes lack connection to the rest and the results of K-means clustering are affected by the initial point selection.we conducted multiple clusters, and selected the clusters with stable results in multiple clusters and the nodes in the clusters for analysis. The indicators in these clusters reflect some similar themes. We extracted the common themes in these clusters according to the meaning of the indicators. Some of the results are displayed in table 2:
+\begin{table}[h]
+    \centering
+    \caption{Caption}
+    \label{tab:my_label}
+    \begin{tabular}{|c|c|c|}
+    \hline
+        Cluster &subject&Representative indicators  \\
+        \hline
+       Cluster 1  & Food, Health, and Wealth&'2.3.1', '2.4.1', '3.1.1',etc\\
+       \hline
+       Cluster 2&Economic development and Foreign cooperation&'7.1.1', '8.4.2', '8.6.1',etc\\
+       \hline
+       Cluster 3&Environment and water resources&'6.6.1', '14.4.1', '14.5.1',etc\\
+       \hline
+    \end{tabular}    
+\end{table}
+\subsection{Multi-layer Programming Task Volume Network Model}
+Based on relationship network $G_{t} \left ( V,E \right ) $,we determine priorities of different SDGs from two aspects,the importance of SDG and implement efficient of tasks.We utilize \textbf{Social Network Analysis}(SNA) to calculate the importance of each indicators and apply them to judge priority.Then we divide all SDGs into six \textbf{macro dimensions} based on authorities and theories.According to the six macro dimensions we build a \textbf{Multi-level Programming Task Model(MPTM)}.We also build a \textbf{Dynamic Diffusion network Model(DDNM)},we induce rate factors for performing the task as well as influence factors between the indicators,to simulate evolution of network.Combining the two Model,we calculate the \textbf{priorities of each SDG and the development plan} of the decade based on the degree of completion of the six macro dimensions.
+\subsubsection{Calculation of Importance of SDGs by SNA}
+Since there are different degrees of synergy and restriction effect among different indicator,and different nodes have different importance,we use centrality degree and the eigenvector centrality degree in SNA to measure importance of indicators.Relatively important indicators should be given more priority.Because edges with non-positive weight existing in$G_{t} \left ( V,E \right ) $,we create a method to adjust $G_{t} \left ( V,E \right ) $:
+\begin{equation}
+    w'\left ( t_{i}^{n}\to _{j}^{m} t  \right ) = w\left ( t_{i}^{n}\to _{j}^{m} t  \right )+1
+\end{equation}
+This formula add 1 to weight of edge without any other change of structure of $G_{t} \left ( V,E \right ) $.After processing, $G_{t} \left ( V,E \right ) $ is changed to a fully directed graph,nodes with a synergistic effect have an edge with a weight greater than 1. Nodes with no connection have an edge with a weight of 1 while nodes with a weight less than 1, all edges have weights between 0 and 2.\par
+If a node has a synergistic effect with multiple nodes, the node would have a large degree, the index represented by the node should be given a relatively high importance; if a node and multiple nodes have a restrictive effect, the node would have a small degree, the index represented by the node should be given a relatively low importance. Thus the centrality of a node can reflect the importance of this node.Degree centrality is a method that reflects the relative magnitude of a certain node. We denote $t_N$ is the remaining node except $t_{i}^{n}$, the degree centrality $D(t_{i}^{n})$ of a certain node is calculated as follows:
+\begin{equation}
+    D\left ( t_{i}^{n}  \right )=mean\left ( w\left ( t_{i}^{n}\to t_N \right )  \right ),t_{N}\in V-\left \{ t_{i}^{n} \right \}   
+\end{equation}\par
+Different from the degree centrality,eigenvector centrality is another index of calculating centrality in social network analysis.The eigenvector centrality also represents the importance of the neighbors of the nodes. The eigenvector center degree $EC\left ( t_{i}^{n}  \right )$ of a certain node and the feature vector $v_{EC}$of all nodes can be expressed as follows:
+\begin{equation}
+         EC\left ( t_{i}^{n}  \right )  = \mu \sum w\left ( t_{i}^{n}\to t_{j}^{m}   \right ) EC\left ( t_{N} \right ),t_{N}\in V-\left \{ t_{i}^{n} \right \} ,i=1\cdots,N
+\end{equation}
+\begin{equation}
+     W_{V_{EC} }  = \mu v_{EC} 
+\end{equation}
+ where W is adjacency matrix of  $G_{t} \left ( V,E \right ) $,eigenvector $V_{EC}=\left [ EC\left ( t_{1}^{1} \right ),EC\left ( t_{1}^{2}  \right ) ,\cdots EC\left ( t_{1}^{n}  \right )   \right ]  $,$\mu$ is a parameter.Literature \cite{EC} indicates that when $\mu$ is the maximum eigenvalue of $W$,$V_{EC}$has one and only one solution. According to formula (10), the eigenvector corresponding to the maximum eigenvalue of $W$ is $V_{EC}$.\par
+ In practice, an indicator that synergistic with important indicators should also be valued. The eigenvector centrality can better describe the importance of indicators in the network than the degree of centrality.We calculate two index of $G_{t} \left ( V,E \right ) $.The highly  important indicators are displayed in table 3 and table 4.
+ \begin{table}[h]
+ \centering
+ \caption{5 indicators with the highest degree centrality}
+ \label{tab:my_label}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Indicator              & 17.9.1                & 8.2.1                 & 4.b.1                 & 17.6.2                & 1.1.1                 \\ \hline
+$D(t_{i}^{n})$         & 1.68                  & 1.30                  & 1.26                  & 1.25                  & 1.24                  \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[h]
+\centering
+ \caption{5 indicators with the highest eigenvector centrality}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Indicator              & 4.1.1                 & 4.5.1                 & 4.b.1                 & 17.9.1                & 6.a.1                 \\ \hline
+$EC(t_{i}^{n})$        & 0.197                 & 0.188                 & 0.185                 & 0.184                 & 0.181                 \\ \hline
+\end{tabular}
+\end{table}
+The network is described more comprehensively due to the eigenvector centrality. We choose the eigenvector centrality degree as the weight to measure the importance of the $t_ {i} ^ {n} $ in the network,denote as:
+\begin{equation}
+    I\left ( t_{i}^{n}  \right )=EC\left (  t_{i}^{n} \right )
+\end{equation}
+From the formula,the higher $I\left ( t_{i}^{n}  \right )$,the higher the priority of indicator, we conclude that 4.b.1,17.9.1 have a high priority. Counting $I\left ( t_{i}^{n}  \right ) $of each indicator of SDG, we can get the relative importance $I(T_{i})$:
+\begin{equation}
+    R\left ( t_{i}  \right ) =mean\left ( R\left ( t_{i} ^{n}  \right )  \right )
+\end{equation}
+Finally, we conclude that 17,6,4,1 these four SDG targets have high importance and require attention. Since this process is static and single-layer, it is difficult to measure the priority in time dimension and global. Therefore, in the following paper, we establish a multi-layer task planning model and dynamic network model to measure the priority of SDG from the perspective of task completion efficiency.
+\subsubsection{Multi-level Programming Model}
+Although each SDG may have different importance, some macro dimensions composed of several SDGs are the ultimate pursuit of human development, and they should be developed in a balanced way.We expanded the SDG up and down into a three-layer planning model, where the first layer is macro value, based on existing research and official reports, we divide the different SDG into six different categories. Human society should pay equal attention to the six macro dimensions; the second layer is the 17 SDG objectives; and the third layer is the indicators included in the SDG, which can be considered as sub-tasks of an SDG.The network structure of the three layers is shown in Fig.5.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth,height=0.55\textwidth]{figures/dim.png}
+    \caption{Three layers of network}
+    \label{fig:my_label}
+\end{figure}
+Through the three-layer network, it can be found that these six goals all depend on the development of various indicators under each SDG. Our multi-layer task planning model starts from the sub-task of each SDG, completes part of the sub-task and finally delivers the change of the total development task amount.Thus, we established the relationship between the subtask $R\left ( t_{i}^{n}  \right ) $residue and the overall task $R_{total}$residue according to the multilayer network:
+\begin{align}
+R\left ( T_{i}  \right ) &=mean\left ( R\left ( t_{i}^{n}  \right )  \right ) \\
+R\left ( Class_{k}  \right ) &=mean\left ( T_{i}  \right ) \\
+R_{total}&=\frac{\sum_{k=1}^{6}R\left ( Class_{k}  \right ) }{6}  
+\end{align}
+These formulas describe relations between task residual amount for the SDG and $R(T_{i})$;Task residues $R\left ( Class_{k}  \right )$and $ R\left ( t_{i}^{n}  \right )$ for a certain macro target;Developed for the total task residual amount of $R_{total}$ and $R\left ( Class_{k}  \right )$.
+\subsubsection{Dynamic Diffusion network Model}
+When developing the priority of $T_{i}$,we want to get the least $R_{total}$ after developing,due to the synergistic or restrictive effect between the indicators.If we develop a $t_{i}^{n}$,the amount of indicator tasks with synergy with $t_{i}^{n}$ will decrease,but the amount of indicator tasks with restriction effect with $t_{i}^{n}$ will increase.We construct a dynamic network to evaluate task residual variation after developing a indicator.First,we create the rate factor $\alpha$,according to assumptions,all the subtargets have the same $\alpha$,in a period t to t+1:
+\begin{equation}
+    R^{t+1} \left ( t_{i}^{n}  \right ) =\left ( 1-\alpha  \right ) R^{t} \left ( t_{i}^{n} \right ) 
+\end{equation}
+Since  development of $t_{i}^{n}$ can drive other indicators,we create an affecting factor $\beta$ to describe mutual effects between the subtargets.We signfy $t_{N}$ as neighbours of $t_{i}^{n}$,then the formula of task volume influence between different metrics is:
+\begin{equation}
+    R^{t+1}\left ( t_{N}  \right ) =\left ( 1-\beta w\left ( t_{i}^{n}\to t_{N}  \right )  R^{t}\left (  t_{i}^{n}\right )  \right ) R^{t} \left ( t_{N}  \right )  
+\end{equation}
+This formula illustrates development of $t_{i}^{n}$ does dispersal effects on its neighbors.This effect is determined by the weights of the edges between the two indexes as well as the task residue of $R^{t}\left (  t_{i}^{n}\right )$.\par
+According to assumptions,the effect of the multilevel transfer is negligible,we only update task volume of neighbors of  $t_{i}^{n}$.Therefore, we can represent the task amount change of all nodes in the network after the development of a $T_{i}$.We then transfer the change of subtask amount upward through the multi-layer task planning model, and finally get the change of $R_{total}$ between period t to t+ 1.It is displayed in Algorithm 2.
+\begin{algorithm}[h]
+\caption{The network update process after the development of $T_{i}$}
+\label{alg:Framwork}
+    \begin{algorithmic}
+        
+        \State \textbf{Step 1:}Update the amount of tasks of $t_{i}^{n}$ included in each $T_{i}$.
+        \State \textbf{Step 2:}Update the mount of tasks of neighbours of $t_{i}^{n}$.
+        \State \textbf{Step 3:}Updated $R^{t+1}\left ( t_{N}  \right )$ by the multi-layer task planning model.
+    \end{algorithmic}
+\end{algorithm}
+When selecting priority $T_{i}$, we wish that the selected $T_{i}$ can have as balanced and efficient impact on the six macro dimensions as possible, while the overall task surplus $R_{total}$ reflects the development degree of the six macro dimensions. Therefore, we designed the criteria for the priority $T_{best}$ between t and t + 1:
+\begin{equation}
+    T_{best} =\arg \min _{T_{i} } \left ( R_{t+1}^{total}\left ( T_{i}  \right )   \right ) 
+\end{equation}
+This formula illustrate what kind of SDG prioritize.The prior SDG we need should be the SDG that minimize overall task residual amount of $R_{total}^{t+1}$,which means we can obtain the highest overall task completion efficiency by developing it.\par
+We established a multi-layer task programming model and dynamic network model on the Indonesian data, taking $\alpha$ =0.2 and $\beta$ =0.05, and calculated the priority development goals for each year in the decade. The results are shown in table 5.
+\begin{table}[h]
+    \centering
+    \caption{SDG targets for each of 10 years}
+    \label{tab:my_label}
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Year     & 1  & 2 & 3 & 4 & 5  \\ \hline
+    Priority & 17 & 2 & 9 & 9 & 17 \\ \hline
+    Year     & 6  & 7 & 8 & 9 & 10 \\ \hline
+    Priority & 4  & 9 & 2 & 4 & 9  \\ \hline
+    \end{tabular} 
+\end{table}
+From the table, we can conclude that the Indonesian government should give priority to foreign cooperation, hunger issues, industrial and manufacturing development, and education level over the next 10 years. This is consistent with the current situation of food security problems, backward industrial development and low level of education in Indonesia.\par
+\subsection{Dynamic network evolution model and Insert Node model based on cluster}
+First,we define how to quantify the \textbf{completion of an SDG} representation  based on the model in 1,2. Then we propagate this effect throughout the network, and then evaluate the changes of network features occurring before and after the effect. In order to promote the balanced development of the macro dimensions, we \textbf{insert a series of nodes} that may promote the backward macro dimensions by comparing the spectral clustering results with the backward macro dimensions. Through analyzing these nodes, we finally give a \textbf{new sustainable development goal}.
+\subsubsection{Dynamic network evolution}
+SDGs is a comprehensive system, and the completion of them actually represent all their targets are completed.We define an SDG is completed when all its targets have been completed to 100 percents and all metrics reach the ideal state.Its ability to affect other SDGs is considered unchanged.Poverty  eradication(SDG 1) has universal importance and is easy to quantify its completion. We study the situation after poverty eradication,that is, set the poverty eradication as the completion state in the model.We use the effect of multiple task planning and dynamic network model established in 2 to spread the influence of SDG 1 completion.Task surplus $R\left ( Class_{k}  \right ) $for the six macro dimensions after the change is shown in table 6.
+\begin{table}[h]
+    \centering
+    \caption{Changes in six macro dimensions tasks after SDG 1}
+    \label{tab:my_label}
+    \begin{tabular}{|c|c|c|c|}
+\hline
+Macro Dimensions & Enabling Framework & Thriving lives          & Stable earth-system   \\ \hline
+Task Reminder & 103\%              & 71\%                    & 93\%                  \\ \hline
+Macro Dimensions & Equity             & Innovation \& education & Sustainable economies \\ \hline
+Task Reminder & 97\%               & 98\%                    & 101\%                 \\ \hline
+\end{tabular}
+\end{table}
+This table shows that poverty elimination has the greatest positive impact on Thriving lives and Stable earth-system, and has a restrictive effect on Enabling Framework and Sustainable economies. According to the statistics of $R(T_{i})$, it can be found that it is most helpful to the completion of SDG 2,3,6, and 8, indicating that poverty eradication can effectively solve the problems of hunger, health, health and economic development, which is in line with the realistic logic. At the same time, it was observed that the completion of the nodes of the whole network was improved, especially those with poverty eradication.\par
+Since SDG 1 has been completed, we removed all the targets of SDG 1 from $G_{t}\left ( V,E \right )$, and the priority of the targets will also change. We calculated the priority targets in the 10 years after poverty eradication and compared them with the priority targets before poverty eradication. The results are shown in the following table:
+\begin{table}[h]
+    \centering
+    \caption{Priority targets in the past 10 years before and after poverty eradication}
+    \label{tab:my_label}
+    \begin{tabular}{|c|c|}
+\hline
+State                 & A 10-year priority target \\ \hline
+Before achieving SDG 1 & 17,2,9,9,17,4,9,2,4,9     \\ \hline
+After achieving SDG 1  & 9,2,9,17,4,9,2,9,4,9      \\ \hline
+\end{tabular}
+\end{table}
+From the results in the table, the priority target is largely unchanged after poverty elimination because SDG 1 itself is not a high priority target; However, the elimination of SDG 1 still has an impact, including the decreases of priority of SDG 17. This is because the impact of SDG 17 on SDG 1 reduces after SDG 1 is reduced.\par
+The removal of SDG 1 also means the disappearance of the edges associated with the subtargets of SDG 1 , and changes of  the importance of the remaining subtargets. We conduct a social network analysis of the post-poverty eradication networks.We calculate $I\left ( t_{i}^{n}  \right ) $ of residual indicators and $I\left ( T_{i}  \right ) $ of residual SDG targets.The effect of poverty eradication on $I\left ( T_{i}  \right ) $ of residual SDG targets in the network is shown in the figure below, which can be found from the Fig.6.
+\begin{figure}
+    \centering
+    \includegraphics{figures/poor.png}
+    \caption{Changes in the importance of individual SDG targets before and after poverty eradication (i. e. completion of SDG 1)}
+    \label{fig:my_label}
+\end{figure}
+Target with strong synergy on SDG 1, such as SDG 2 and SDG 4, have decreased importance after SDG 1 is completed, and targets with strong restriction on SDG 1, such as SDG 12, SDG 15, SDG 15 and SDG 16 have increased importance after SDG 1 is completed.
+\subsubsection{Create new SDG based on community structure}
+The new SDG should focus on Macro dimensions with lower developing level and developing speed,because people aim to coordinated and balanced develop our world.If we still develop these SDGs contained in macro dimensions,we cannot take advantage of synergies effect of network. To better develop macro dimensions,we can create a new SDG,since SDG1 has been achieved in hypothesis .Our model utilize results of spectral cluster on $G_{t}\left ( V,E \right )$,because on large-scale networks, the clustering structure allows the existence of on-approximate shortest algorithm. This also reflects that in different meanings and views, the two different indicators can still have a very close distance. The shorter the distance is the more likely the nodes would be affected.This provides the basis and support for the formulation of a comprehensive policy.The inclusion of indicators in clusters with greater similarity to underdeveloped macro dimensions may have greater benefit to macro dimensions,determine a cluster $A_{i}$ has similarity $IS\left ( A_{i},Class_{k}   \right ) $ with a macro dimension $Class_{k}$.Regarding $A_{i}$ and $Class_{k}$ 
+ as indicators set,the formula of similarity is:
+\begin{equation}
+    IS\left ( A_{i},Class_{k}   \right ) =\frac{\left | A_{i}\cap Class_{k}   \right | }{\sqrt{\left | A_{i}  \right | \times \left |  Class_{k} \right | } } ,i=1,2\cdots,5
+\end{equation}
+We select the cluster has  the highest similarity with the two underdevelopment aspects, and insert new node in these clusters networks. New node should be connected with high importance nodes, because these old important nodes with cluster synergy can drive the development of the whole cluster,which means the macro dimensions can benefit more.In summary, our strategy for setting the new goals is shown in Fig.7.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth,height=0.4\textwidth]{figures/flow2.png}
+    \caption{Flow chart of new node strtegy}
+    \label{Flow chart of new node strtegy}
+\end{figure}
+According to the strategy, we analyze the situation after the completion of SDG 1.According to our results, category Enabling Framework and Sustainable economies developed backward after the completion of SDG 1. We find the clusters with the highest similarity with these two categories from the spectral clustering results, which represent the national health and social development, economic development and foreign cooperation respectively. We have extracted the indicators with high importance from these two clusters, where the following three indicators have approximate meanings that deserve our attention:
+\begin{enumerate}
+    \item 17.6.2 Fixed Internet broadband subscriptions per 100 inhabitants, by speed (per 100 inhabitants)
+    \item 17.8.1 Internet users per 100 inhabitants
+    \item 17.9.1 Total official development assistance (gross disbursement) for technical cooperation
+\end{enumerate}
+These three sub-goals are related to Internet technology. Combining these three sub-goals, we can set a new SDG goal for Indonesia: the development of information technology.According to these corrleation indicators,we suggest that after the eradication of poverty, Indonesia should develop towards a more informationized, technological, high-level society.\par
+The new SDG "Development and popularization of Information Industry" consists of
+\begin{enumerate}
+    \item Universal Internet
+    \item Develop Information Inddustry
+    \item Network Security
+    \item Internet of Things
+\end{enumerate}
+\subsection{Performance of Model when Facing International Explosive Events}
+When our model describing the performance of the SDG network when encountering uncertainty, we first quantify the impact of explosive events on task volume and work efficiency and then imposed the effect on the subtarget of the corresponding cluster. We calculated the evolution of the SDG network in Indonesia in the face of natural disasters.
+\subsubsection{Quantification of Explosive Events}
+Explosive events can affect the model in two aspects. One is increasing or decreasing the task volume of some SDG. The other one is improving or reducing the task completion efficiency of some SDG. The effects diminishes over time and eventually disappears. Different types of events would have effects on several different SDG targets Therefore, we impose the effect of the events on the clusters associated with them. We take technology development and war as examples to discuss the way to quantify the impact of events.\par
+Technology development is a positive influencing factor that would affect the subtargets of education, technology, national health and social development as follows:
+\begin{equation}
+    \alpha ^{t}=\alpha \left ( 1+e^{-\sigma t}  \right )
+\end{equation}
+$\alpha$ is the completion rate factor of the subtarget. $\alpha^{t}$ represents the completion rate factor of the affected target at time.  is a parameter reflecting the degree of influence. The formula reflects the effect of a certain technological breakthrough on the rate of task completion.\par War is a negative impact event that may have the following effects on the subtargets of food, health and wealth as follows:
+\begin{align}
+    alpha ^{t} & = \frac{\alpha }{1+e^{-\sigma t} } \\
+R^{t}\left ( t_{i}^{n}  \right ) &= R^{t-1}\left ( t_{i}^{n}  \right )\left ( 1+e^{-\sigma t} \right ) 
+\end{align}
+These two formulas reflect the influence of war on the task completion rate and mission quantity.
+\subsubsection{Network evolution}
+We discuss the evolution of the SDG network in Indonesia in the face of natural disasters. we set $\sigma=0.5$ . The effect of formula (23) (24) is added to the dynamic network model, and the priority SDG of one decade is calculated in table 8:
+\begin{table}[h]
+    \centering
+    \caption{the impact of natural disasters on priority targets within 10 years}
+    \label{tab:my_label}
+    \begin{tabular}{|l|l|}
+\hline
+                                    & A 10-year priority target \\ \hline
+There are no natural disasters      & 17,2,9,9,17,4,9,2,4,9     \\ \hline
+The occurrence of natural disasters & 2,2,17,9,2,9,17,4,9,2     \\ \hline
+\end{tabular}
+\end{table}
+As can be seen from the table, SDG 2 has a high priority in the two years after the natural disaster. After that the priority is gradually similar to that without the natural disaster as the effect of the disaster decreases. We also calculate the change in task remainder of the six macro dimension after natural disasters, as shown in the Fig.8.
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{figures/1.png}
+    \caption{The left chart shows the change of the task remainder (unit:\%) in the decade without a natural disaster; the right chart shows the change of the task remainder of each macro dimension over the decade after a natural disaster}
+    \label{fig:my_label}
+\end{figure}
+The results show that Thriving lives and Stable earth-system were impacted by disasters in the first three years after the natural disaster seriously. Later, as the impact of the disaster weakened, other macro dimensions gradually achieved a balanced development. We can summarize the impact of major events on the network: major events would cause a large short-term impact on the related goals, while over time, the impact weakens and the network gradually returns to normal.
+\subsection{Extention of Our Model}
+Our target network model also applies to the target network construction and priority evaluation of some other companies or organizations. According to the mathematical model we established, we need to use the data over time of the indicators related to the goals formulated by the company or organization. Then we use Spearman similarity to evaluate and calculate the indicators representing the association strength of the two goals. According to the index, we can build an undirected weighted graph with these targets as nodes. Then, according to the graph, we can use SNA technology to calculate the specific influence of each node, that is, each goal on the whole goal network, which is calculated in the same way as when we calculate the SDG target. According to the size ranking of the index, we can rank the importance of each target. On the other hand, the task load needed to complete a goal also determines whether we should give priority to it. Therefore, we will specifically measure the importance of each goal in the network and the amount of tasks to achieve the goal, and then get the priority of each goal.\par
+Similar to the case that a target is completed in the SDG, if a target is completed in the goal network of the company, we would diffuse this influence in the network and calculate a new state that fits the situation after changing. A new network structure would also be reconstructed  to adapt to the new state. After the new network structure is established, we can also use the SNA technology to evaluate the new priority of each target according to the new network structure, so as to provide the most efficient scheme that meets the new situation in order to achieve all the new goals.\par
+In addition, just as our network model can respond to the changes caused by international events in SDG, here our network model can also adapt to various social environment changes or other situations. In the situations that events affect our goal, in our model we will first evaluate the influence of the event on the corresponding index. Then apply the change of this index on the network and spread it to the whole network. Combined with the other effects of the event (such as the change of completion efficiency of a target), a new network structure can be built to adapt the change caused by the event. Under the new network structure, our model can still provide the prioritization of each target conforming to the new state and situation through the SNA technology.
+\section{Sensitivity analysis}
+In our model, we have introduced two parameters, $\alpha$ and $\beta$, to control our network structure, which can help us to build the network family and reasonably respond to the changes of situation. To verify the reliability of our model, we now need to perform a sensitivity analysis on these two parameters, $\alpha$ and $\beta$.First, we verified the impact of changes in $\alpha$ and $\beta$ parameters on the results of the most priority SDGs in the next decade,they are listed in table 9.
+\begin{table}[h]
+    \centering
+    \caption{the priority SDG within ten years when taking different values of $\alpha$ and $\beta$}
+    \label{tab:my_label}
+    \begin{tabular}{|c|c|}
+\hline
+Parameter value         & Ten years of the most priority SDG \\ \hline
+$\alpha=0.1,\beta=0.05$ & 17, 17, 2, 17, 2, 2, 9, 4, 9, 17   \\ \hline
+$\alpha=0.2,\beta=0.05$ & 17, 2, 9, 9, 17, 4, 9, 2, 4, 9     \\ \hline
+$\alpha=0.5,\beta=0.05$ & 9, 2, 4, 9, 17, 16, 4, 9, 4, 9     \\ \hline
+$\alpha=0.2,\beta=0.01$ & 9, 9, 2, 9, 4, 9, 4, 2, 9, 4       \\ \hline
+$\alpha=0.2,\beta=0.1$  & 17, 2, 17, 9, 4, 9, 8, 9, 2, 4     \\ \hline
+\end{tabular}
+\end{table}
+From the table, we can see that when $\alpha$ and $\beta$ change, the evaluated priority SDG recommendations for the next decade do not change greatly. Basically the priority SDG target is still SDG 2,4,9,17. It shows that the stability of our model and our parameter values are reasonable.\par
+Subsequently, we also verified the effect of the $\alpha$ and $\beta$ parameters taking different values on the task remainder  within a decade, shown in Fig.9:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth,height=0.35\textwidth]{figures/sen.png}
+    \caption{Relations between total task surplus and year}
+    \label{fig:my_label}
+\end{figure}
+The curves in the figure represent the relationship of the remaining task quantity predicted by the model versus time, and the five curves respectively represent the cases when different values of $\alpha$ and $\beta$ are taken. As we can see from the figure, the change of the task quantity brought about by the $\alpha$ parameter is obvious, which indicates that our task remainder is sensitive to the $\alpha$. This is predictable, because in our model, $\alpha$ is directly acting on task completion. Task remainder is more robust to changes in $\beta$.
+\section{Strengths and Weaknesses}
+\subsection{Strengths}
+\begin{itemize}
+\item Our network is based on the quantitative analysis of the statistical data of the authorities, with considering of the specific definitions of the SDGs by the United Nations, our models are objective and scientific. Network structure,using the edge weight reflects the influence,between targets, reveals the correlation between the UN SDG targets, including synergy and restriction effects. From the perspective of data revealed between the SDGs,they have a complex internal logic structure.We determine priority of SDGs and illustrate importance of individual priority to overall goal.
+\item On the priority ranking,we propose the most efficient scheme for the macro dimensions of SDGs. The SDG target influence to the whole network are not only focus on the correlation strength between a target and another target of each target factors,but also the remaining task.
+\item We analyze the network from multiple static and dynamic perspectives and integrate relevant data and official opinions, so our model is more accurate and robust.sensitivity analysis
+\end{itemize}
+\subsection{Weaknesses}
+\begin{itemize}
+    \item Our models are discussed in some countries,lacks discussions of the global situation.
+    \item Our model is based on multiple official agency reports and other expert reports, with inevitably subjective one-sidedness.
+    \item We determined a SDG is achieved but the weight of it do not change. This is an ideal condition, since weight is calculated based on indicators and they would change if a certain SDG is achieved.
+\end{itemize}
+\section{Conclusion}
+The 17 SDGs of the United Nations are not in simple and independent relationships, but have complex coordination and constraints relationship.  Because of this, the priority of the SDG targets and the interaction between the SDGs are crucial.  Our model builds a network structure adapted to a single country based on the impact between targets, so as to analyze the role of a single SDG target on the overall goal.   Based on this influence of each targets, we can get the priority of the targets.  \par 
+Take Indonesia as an example, for the country to develop SDG 17(Reinvigorate the global partnership for SDG) can achieve the maximum overall efficiency.  SDG 2, SDG 9, SDG 4 can also be prioritized. When the social environment or target state change,  our model is able to change the structure of the network to adapt to the new state of the country and give new target priority. Take natural disaster as an example, in this case Indonesia should give priority to the development of  SDG 2. Therefore, our analysis is equally applicable to environments where various changes occur.  Our model construction is based on the statistical data of various countries, so the analysis results are more suitable to specific countries than for the whole world, which means the development plan is more feasible and reliable.  However, due to the lack of specific data support, our model has not considered the task load difference between different SDG sub-targets. In the future, if more data can be introduced for analysis, it can be further refined in this aspect to make the model more accurate. This model is also applicable to build other network that related to multiple association tasks, and can also provide reliable task priority suggestions for other companies or organizations, so it still has a very broad development prospects.
+%refer to results
+%outline main finding
+%relate to objective and literature
+%reasons(for results)
+%significance
+%limitation
+%future analysis
+%highlight importance of finding
+%summarises the main finding
+%future suggestions
+\begin{thebibliography}{99}
+\bibitem{United Nations}United Nations. The Millennium Development Goals Report2015. New York: United Nations, 2015.
+\bibitem{United}United Nations. Transforming Our World: The 2030 Agenda for Sustainable Development. New York: United Nations, 2015
+\bibitem{9}United Nations. The Sustainable Development Goals Report 2020. New York: United Nations, 2020.
+\bibitem{weak}Allen c，Mettemicht G，wiedmann T．Initial pmgress in implementing the sustainable Development Goals(sDGs)：a review of evidence from countries．Suslainability Science，2018，13(5)：1453-1467．
+\bibitem{Nature 2016}Nilsson M, Griggs D, Visbeck M. Map the interactions between sustainable development goals: Mans Nilsson, Dave Griggs and Martin Visbeck present a simple way of rating relationships between the targets to highlight priorities for integrated policy. Nature, 2016, 534(7607): 320-323.
+\bibitem{UN-DESA No.141.2015}Le Blanc D. Towards Integration at Last? The Sustainable Development Goals as a Network of Targets. New York. United Nations Department of Economic and Social Affairs(UN-DESA) Working Paper No.141.2015.
+\bibitem{OECD Paris 2016}Organization for Economic Cooperation and Development(OECD). Better Policies for Sustainable Development 2016: A New Framework for Policy Coherence. OECD Publishing. Paris.2016.
+\bibitem{OWG 2014}OWG.Open Working Group on Sustainable Development Goals Annex 1.Interlinkages.New York: United Nations, 2014.
+\bibitem{Open Working Group 2018}Open Working Group,Open Working Group  proposal for  Sustainable Development Goals,newyork,2018
+\bibitem{8Natl Sci Rev}Bojie Fu1,2,∗, Shuai Wang2, Junze Zhang2, Zengqian Hou3 and Jinghai Li3,∗，Unravelling the complexity in achieving the 17 sustainable-development goals，Natl Sci Rev, 2019, Vol. 6, No.3 
+\bibitem{IGES}Zhou X, Muinuddin M. Sustainable Development Goals  Interlinkages and Network Analysis: A practical tool for SDG  integration and policy coherence. IGES Research Report RR1602.  Hayama: IGES, 2017.
+\bibitem{SP} Hauke J ,  Kossowski T . COMPARISON OF VALUES OF PEARSON'S AND SPEARMAN'S CORRELATION COEFFICIENTS ON THE SAME SETS OF DATA[J]. Quaestiones Geographicae, 2011, 30(2):87-93. 
+\bibitem{SNA}P. Rani, M. P. S. Bhatia and D. K. Tayal, "A Comparative Study of Qualitative and Quantitative SNA," 2019 6th International Conference on Computing for Sustainable Global Development (INDIACom), New Delhi, India, 2019, pp. 500-504.
+\bibitem{SNAC}W. F. Canto and N. C. Furtado Canto, "Application of social network analysis (SNA) in a community of users of an Enterprise Resource Planning (ERP) system," 2019 14th Iberian Conference on Information Systems and Technologies (CISTI), Coimbra, Portugal, 2019, pp. 1-6.
+\bibitem{CLU}E. Raju, M. A. Hameed and K. Sravanthi, "Detecting communities in social networks using unnormalized spectral clustering incorporated with Bisecting K-means," 2015 IEEE International Conference on Electrical, Computer and Communication Technologies (ICECCT), Coimbatore, India, 2015, pp. 1-5.
+\bibitem{EC}Phillip Bonacich. “Power and Centrality: A Family of Measures.” American Journal of Sociology 92(5):1170–1182, 1986
+\end{thebibliography}
+\begin{appendices}
+\section{Results of cluster}
+\begin{enumerate}
+    \item \textbf{Food, health, and the Rich and the poor:}\par
+    '2.3.1', '2.4.1', '3.1.1', '3.2.1', '3.b.1', '3.c.1', '9.a.1', '9.c.1', '1.a.2'
+    \item \textbf{National Health and Social Development:}\par
+    '3.6.1', '3.8.2', '3.a.1', '7.2.1', '7.3.1', '9.2.1', '9.4.1', '9.5.1', '10.6.1', '11.2.1', '12.2.2', '12.a.1', '16.8.1', '17.2.1', '17.3.2', '17.12.1', '17.11.1', '3.3.1', '3.4.1', '8.1.1', '3.7.1', '8.a.1', '2.2.1', '6.a.1', '8.2.1', '17.9.1'
+    \item \textbf{Economic Development and Foreign cooperation:}\par
+    '7.1.1', '8.4.2', '8.6.1', '8.10.1', '11.1.1', '17.6.2', '17.8.1', '17.13.1', '4.b.1'
+    \item \textbf{The Environment and Water Resources:}\par
+    '6.6.1', '14.4.1', '14.5.1', '15.4.1’, '15.a.1', '15.b.1' 
+    \item \textbf{Education and Science and Technology:}\par
+    '9.b.1', '4.1.1', '4.5.1'
+\end{enumerate}
+\section{Details of important Indicators}
+\begin{table}[h]
+\caption{Details of important Indicators}
+\label{tab:my_label}
+\begin{tabular}{l}
+
+\multicolumn{1}{l}{1.1.1 Proportion of population below international poverty line (\%)}                                              \\ 
+1.2.1 Proportion of population living below the national poverty line (\%)                                                              \\
+1.a.2 Proportion of total government spending on essential services, education (\%)                                                     \\
+2.2.1 Proportion of children moderately or severely stunted (\%)                                                                        \\
+2.3.1 Agriculture, forestry, and fishing, value added per worker (constant 2010 US\$)                                                   \\
+2.4.1 Fertilizers by nutrient (tonnes)                                                                                                  \\
+3.1.1 Maternal mortality ratio                                                                                                          \\
+3.2.1 Under-five mortality rate, by sex (deaths per 1,000 live births)                                                                  \\
+4.1.1 Minimum proficiency in reading, by education level and sex (\%)                                                                   \\
+4.5.1 Gender parity index for achievement in reading, by education level (ratio)                                                        \\
+6.6.1 Water body extent (permanent and maybe permanent) (\% of total land area)                                                         \\
+7.1.1 Proportion of population with access to electricity, by urban/rural (\%)                                                          \\
+8.2.1 Annual growth rate of real GDP per employed person (\%)                                                                           \\
+9.2.1 Manufacturing value added as a proportion of GDP (\%)                                                                             \\
+9.5.1 Research and development expenditure as a proportion of GDP (\%)                                                                  \\
+9.b.1 Proportion of medium and high-tech industry value added in total value added (\%)                                                 \\
+9.c.1 Proportion of population covered by a mobile network, by technology (\%)                                                          \\
+11.1.1 Proportion of urban population living in slums (\%)                                                                              \\
+12.2.2 Domestic material consumption, by type of raw material (tonnes)                                                                  \\
+12.a.1 Researchers (in full-time equivalent) per million inhabitants (per 1,000,000 population)                                         \\
+14.4.1 Total fisheries production (metric tons)                                                                                         \\
+14.5.1 Average proportion of Marine Key Biodiversity Areas (KBAs) covered by protected areas (\%)                                       \\
+15.4.1 Average proportion of Mountain Key Biodiversity Areas (KBAs) covered by protected areas (\%)                                     \\
+16.8.1 Proportion of members of developing countries in international organizations, by organization (\%)                               \\
+17.6.2 Fixed Internet broadband subscriptions per 100 inhabitants, by speed (per 100 inhabitants)                                       \\
+17.8.1 Internet users per 100 inhabitants                                                                                               \\
+\end{tabular}
+\end{table}
+\section{Data Sources}
+\textbf{Worldbank:}https://data.worldbank.org/indicator \par
+\textbf{UN:}https: //unstats. un. org/sdgs/indicators/database/ \par
+\textbf{MDGs:}https://mdgs.un.org/unsd/mdg/Home.aspx \par
+\textbf{SDGs:}un. org/sdgs/indicators/database/ \par
+\textbf{WHO:}https://www.who.int/data/gho/gho-search
+\end{appendices}
+\end{document}
